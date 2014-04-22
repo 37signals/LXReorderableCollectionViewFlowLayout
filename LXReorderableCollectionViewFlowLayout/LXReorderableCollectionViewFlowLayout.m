@@ -43,24 +43,6 @@ static NSString * const kLXCollectionViewKeyPath = @"collectionView";
 }
 @end
 
-@interface UICollectionViewCell (LXReorderableCollectionViewFlowLayout)
-
-- (UIImage *)LX_rasterizedImage;
-
-@end
-
-@implementation UICollectionViewCell (LXReorderableCollectionViewFlowLayout)
-
-- (UIImage *)LX_rasterizedImage {
-    UIGraphicsBeginImageContextWithOptions(self.bounds.size, self.isOpaque, 0.0f);
-    [self.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return image;
-}
-
-@end
-
 @interface LXReorderableCollectionViewFlowLayout ()
 
 @property (strong, nonatomic) NSIndexPath *selectedItemIndexPath;
@@ -290,12 +272,12 @@ static NSString * const kLXCollectionViewKeyPath = @"collectionView";
             self.currentView = [[UIView alloc] initWithFrame:collectionViewCell.frame];
             
             collectionViewCell.highlighted = YES;
-            UIImageView *highlightedImageView = [[UIImageView alloc] initWithImage:[collectionViewCell LX_rasterizedImage]];
+            UIView *highlightedImageView = [collectionViewCell snapshotViewAfterScreenUpdates:YES];
             highlightedImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             highlightedImageView.alpha = 1.0f;
             
             collectionViewCell.highlighted = NO;
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[collectionViewCell LX_rasterizedImage]];
+            UIView *imageView = [collectionViewCell snapshotViewAfterScreenUpdates:YES];
             imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             imageView.alpha = 0.0f;
             
