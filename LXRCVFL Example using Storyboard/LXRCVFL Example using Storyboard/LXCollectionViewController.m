@@ -15,12 +15,12 @@
 // 1 = Only Spade/Club can move within same rank
 
 #define LX_LIMITED_MOVEMENT 0
+#define LX_SHOW_DRAGGING_SHADOW 1
 
 @implementation LXCollectionViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     self.deck = [self constructsDeck];
 }
 
@@ -136,6 +136,21 @@
 
 - (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout didEndDraggingItemAtIndexPath:(NSIndexPath *)indexPath {
      NSLog(@"did end drag");
+}
+
+- (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout willDisplayDraggingView:(UIView *)view
+{
+    NSLog(@"will display view");
+    
+#if LX_SHOW_DRAGGING_SHADOW
+    view.layer.borderColor = UIColor.redColor.CGColor;
+    view.layer.cornerRadius = 4;
+    view.layer.borderWidth = 1;
+    view.layer.shadowColor = UIColor.redColor.CGColor;
+    view.layer.shadowOffset = CGSizeMake(0, 0);
+    view.layer.shadowOpacity = 0.75;
+    view.layer.shadowRadius = 10;
+#endif
 }
 
 @end

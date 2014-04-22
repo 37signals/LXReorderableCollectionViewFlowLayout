@@ -301,6 +301,11 @@ static NSString * const kLXCollectionViewKeyPath = @"collectionView";
             
             [self.currentView addSubview:imageView];
             [self.currentView addSubview:highlightedImageView];
+            
+            if ([self.delegate respondsToSelector:@selector(collectionView:layout:willDisplayDraggingView:)]) {
+                [self.delegate collectionView:self.collectionView layout:self willDisplayDraggingView:self.currentView];
+            }
+            
             [self.collectionView addSubview:self.currentView];
             
             self.currentViewCenter = self.currentView.center;
