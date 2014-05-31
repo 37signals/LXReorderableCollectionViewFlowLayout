@@ -14,7 +14,7 @@
 #ifndef CGGEOMETRY_LXSUPPORT_H_
 CG_INLINE CGPoint
 LXS_CGPointAdd(CGPoint point1, CGPoint point2) {
-    return CGPointMake(point1.x + point2.x, point1.y + point2.y);
+    return CGPointMake(point1.x, point1.y + point2.y);
 }
 #endif
 
@@ -271,18 +271,10 @@ static NSString * const kLXCollectionViewKeyPath = @"collectionView";
             
             self.currentView = [[UIView alloc] initWithFrame:collectionViewCell.frame];
             
-            collectionViewCell.highlighted = YES;
-            UIView *highlightedImageView = [collectionViewCell snapshotViewAfterScreenUpdates:YES];
-            highlightedImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-            highlightedImageView.alpha = 1.0f;
-            
-            collectionViewCell.highlighted = NO;
             UIView *imageView = [collectionViewCell snapshotViewAfterScreenUpdates:YES];
             imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-            imageView.alpha = 0.0f;
             
             [self.currentView addSubview:imageView];
-            [self.currentView addSubview:highlightedImageView];
             
             if ([self.delegate respondsToSelector:@selector(collectionView:layout:willDisplayDraggingView:)]) {
                 [self.delegate collectionView:self.collectionView layout:self willDisplayDraggingView:self.currentView];
@@ -294,22 +286,18 @@ static NSString * const kLXCollectionViewKeyPath = @"collectionView";
             
             __weak typeof(self) weakSelf = self;
             [UIView
-             animateWithDuration:0.3
+             animateWithDuration:0.15
              delay:0.0
-             options:UIViewAnimationOptionBeginFromCurrentState
+             options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut
              animations:^{
                  __strong typeof(self) strongSelf = weakSelf;
                  if (strongSelf) {
                      strongSelf.currentView.transform = CGAffineTransformMakeScale(1.1f, 1.1f);
-                     highlightedImageView.alpha = 0.0f;
-                     imageView.alpha = 1.0f;
                  }
              }
              completion:^(BOOL finished) {
                  __strong typeof(self) strongSelf = weakSelf;
                  if (strongSelf) {
-                     [highlightedImageView removeFromSuperview];
-                     
                      if ([strongSelf.delegate respondsToSelector:@selector(collectionView:layout:didBeginDraggingItemAtIndexPath:)]) {
                          [strongSelf.delegate collectionView:strongSelf.collectionView layout:strongSelf didBeginDraggingItemAtIndexPath:strongSelf.selectedItemIndexPath];
                      }
@@ -334,9 +322,9 @@ static NSString * const kLXCollectionViewKeyPath = @"collectionView";
                 
                 __weak typeof(self) weakSelf = self;
                 [UIView
-                 animateWithDuration:0.3
+                 animateWithDuration:0.15
                  delay:0.0
-                 options:UIViewAnimationOptionBeginFromCurrentState
+                 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut
                  animations:^{
                      __strong typeof(self) strongSelf = weakSelf;
                      if (strongSelf) {
