@@ -60,6 +60,7 @@ static NSString * const kLXCollectionViewKeyPath = @"collectionView";
 
 - (void)setDefaults {
     _scrollingSpeed = 300.0f;
+    _zoomScaleFactor = 1.1f;
     _scrollingTriggerEdgeInsets = UIEdgeInsetsMake(50.0f, 50.0f, 50.0f, 50.0f);
 }
 
@@ -292,7 +293,7 @@ static NSString * const kLXCollectionViewKeyPath = @"collectionView";
              animations:^{
                  __strong typeof(self) strongSelf = weakSelf;
                  if (strongSelf) {
-                     strongSelf.currentView.transform = CGAffineTransformMakeScale(1.1f, 1.1f);
+                     strongSelf.currentView.transform = CGAffineTransformMakeScale(self.zoomScaleFactor, self.zoomScaleFactor);
                  }
              }
              completion:^(BOOL finished) {
